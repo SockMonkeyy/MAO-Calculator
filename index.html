@@ -16,9 +16,21 @@
 
         body {
             font-family: Georgia, 'Times New Roman', Times, serif;
+        
         }
 
         .textOutput {
+            font-weight: bold;
+        }
+
+        .myBtn {
+            width: 12rem;
+            height: 6rem;
+            font-size: 2rem;
+        }
+
+        .title {
+            font-size: 2rem;
             font-weight: bold;
         }
     </style>
@@ -29,9 +41,8 @@
   height: 50vh;">
 
     <div class="bg bg-dark rounded p-5 bg-opacity-50">
-        <h1>Basic MAO Calculator</h1>
+        <h1 class="title">Basic MAO Calculator</h1>
 
-        
         <div class="row text-center pt-5">
             <p class="col-md-4 h2">ARV:</p>
             <input type="number" placeholder="200000" id="arv" class="col-sm-2 pl-3 pr-3">
@@ -41,7 +52,7 @@
             <input type="number" placeholder="7" value="" id="rc" class="col-sm-2">
         </div>
         <div class="row text-center pt-5">
-            <p class="col-md-4 h2">Investor Commissions %:</p>
+            <p class="col-md-4 h2">Investor Profits %:</p>
             <input type="number" placeholder="15" value="" id="ic" class="col-sm-2">
         </div>
         <div class="row text-center pt-5">
@@ -53,12 +64,17 @@
             <input type="number" placeholder="10000" value="" id="af" class="col-sm-2">
         </div>
         <div class="d-flex justify-content-center pt-5">
-          
-            <button onclick="Calculate()" class="col-sm-2 rounded" id="submitBtn">Calculate</input>
+
+            <button onclick="Calculate()" class="col-sm-2 rounded myBtn" id="submitBtn">Calculate</input>
         </div>
         <div class="d-flex justify-content-center pt-2">
             <p class="textOutput h2 pt-3 text-warning" id="textOutput"></p>
-
+        </div>
+        <div class="d-flex justify-content-center pt-2">
+            <p class="textOutput h2 pt-3 text-warning" id="textOutput2"></p>
+        </div>
+        <div class="d-flex justify-content-center pt-2">
+            <p class="textOutput h2 pt-3 text-warning" id="textOutput3"></p>
         </div>
     </div>
     <footer class="pt-5"></footer>
@@ -70,12 +86,30 @@
             var ic = document.getElementById('ic').value;
             var re = document.getElementById("re").value;
             var af = document.getElementById('af').value;
-            const total = parseInt(arv - ((arv * (rc / 100)) + (arv * (ic / 100))) - re - af);
-            const textOutput = document.getElementById('textOutput')
-            const mao = total.toLocaleString('en-US');
 
-            textOutput.textContent =  `Your MAO is $${mao}`;
+            //Calculate MAO
+            //const total = parseInt(arv - ((arv * (rc / 100)) + (arv * (ic / 100))) - re - af);
+            //const total = parseInt(((arv * .7) - re - af) - (arv * (rc / 100)) + (arv * (ic / 100));
+            const rcAmt = (arv * rc) / 100;
+            const icAmt = (arv * ic) / 100;
+            const maxBid = parseInt(((arv - icAmt) - re) - af - rc);
+            const gains = arv - maxBid;
+            const roi = Math.trunc((arv - maxBid) / (maxBid) * 100);
+            const textOutput = document.getElementById('textOutput');
+            const textOutput2 = document.getElementById('textOutput2');
+            const textOutput3 = document.getElementById('textOutput3');
+            //const mao = total.toLocaleString('en-US');
+           // const percentage = Math.floor(perc.toLocaleString('en-US'));
+            console.log(maxBid);
+            console.log(gains);
+            console.log(roi)
+
+            textOutput.textContent = `Your MAO is $${maxBid}`;
+            textOutput2.textContent = `Investor gains $${gains}`
+
         }
+
+        //Enter keypress
 
         arv.getElementById("keypress", function (event) {
 
@@ -83,6 +117,7 @@
                 event.preventDefault();
                 document.getElementById("submitBtn").click();
             }
+
         });
 
     </script>
